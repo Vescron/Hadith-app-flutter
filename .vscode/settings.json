@@ -1,0 +1,4 @@
+{
+    "discord.detailsEditing": "Editing Line {current_line}",
+    "discord.detailsDebugging": "Debugging Line {current_line}"
+}

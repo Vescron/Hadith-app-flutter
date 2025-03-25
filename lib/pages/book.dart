@@ -40,7 +40,7 @@ class BookPage extends StatelessWidget {
                       leading: Text('${index+1}.'),
                       titleTextStyle: TextStyle(fontFamily: GoogleFonts.poppins().fontFamily,fontSize: 14,height: 1.2),
                       title: Text(response['metadata']['sections'][(index+1).toString()].toString()),//${response['metadata']['section']['1'].toString()} : ${response['hadiths'][index]['hadithnumber'].toString()}
-                      trailing: Text('${response['metadata']['section_details'][(index+1).toString()]['hadithnumber_first'].toString()} - ${response['metadata']['section_details'][(index+1).toString()]['hadithnumber_first'].toString()}' ),
+                      trailing: Text('${response['metadata']['section_details'][(index+1).toString()]['hadithnumber_first'].toString()} - ${response['metadata']['section_details'][(index+1).toString()]['hadithnumber_last'].toString()}' ),
                     );
                   },
                 ),

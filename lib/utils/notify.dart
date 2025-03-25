@@ -3,11 +3,13 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 
 class Notify{
   Future<bool> dailyNotification() async{
+    String localTimeZone = await AwesomeNotifications().getLocalTimeZoneIdentifier();
     return await AwesomeNotifications().createNotification(
       schedule: NotificationCalendar(
         preciseAlarm: true,
         allowWhileIdle: true,
-        hour: 6,
+        timeZone: localTimeZone,
+        hour: 06,
         minute: 00,
         second: 00,
         repeats: true

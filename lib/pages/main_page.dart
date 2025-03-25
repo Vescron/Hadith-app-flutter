@@ -62,8 +62,8 @@ int currentIndex = 0;
                 label: Text('Home'),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.info_outline_rounded),
-                label: Text('Info'),
+                icon: Icon(Icons.book_rounded),
+                label: Text('Books'),
               ),
             ],
           ),

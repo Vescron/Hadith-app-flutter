@@ -1,0 +1,67 @@
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  test-and-build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.19.0"
+          channel: "stable"
+          cache: true
+      - name: Get Dependencies
+        run: flutter pub get
+      # - name: Test App
+      #   run: flutter test
+      - name: Build APK
+        run: flutter build apk --split-per-abi
+      - name: Make Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-arm64-v8a
+          path: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+  build-windows:
+    needs: test-and-build-android
+    name: Build Windows binaries
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - uses: subosito/flutter-action@v2
+      with:
+        flutter-version: "3.19.0"
+        channel: "stable"
+        cache: true
+    - name: Build for Windows
+      run: flutter build windows
+    - name: Make zip
+      run: Compress-Archive -Path build\windows\x64\runner\Release\* -Destination release.zip
+    - name: Make Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-release
+        path: release.zip
+
+  Release:
+    permissions:
+      contents: write
+    needs: [test-and-build-android, build-windows]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Download Artifacts
+      uses: actions/download-artifact@v4
+    - name: Display structure of downloaded files
+      run: ls -R
+    - uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          app-arm64-v8a/app-arm64-v8a-release.apk
+          windows-release/release.zip
